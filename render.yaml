@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: myapp
+    runtime: node
+    plan: free
+    branch: main
+    region: virginia
+    rootDir: myapp
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /
+    envVars:
+      - key: PSQL_HOST
+        sync: false
+      - key: PSQL_USER
+        sync: false
+      - key: PSQL_DATABASE
+        sync: false
+      - key: PSQL_PASSWORD
+        sync: false
+      - key: PSQL_PORT
+        sync: false

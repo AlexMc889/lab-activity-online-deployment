@@ -1,11 +1,15 @@
 const express = require('express');
 const { Pool } = require('pg');
 const path = require('node:path');
-require('dotenv').config({ path: path.join(__dirname, 'credentials.env') });
+const { existsSync } = require('node:fs');
+const credentialsPath = path.join(__dirname, 'credentials.env');
+if (existsSync(credentialsPath)) {
+    require('dotenv').config({ path: credentialsPath });
+}
 
 // Create express app
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 // Create pool
 const pool = new Pool({
@@ -26,6 +30,7 @@ process.on('SIGINT', function() {
 });
 	 	 	 	
 app.set("view engine", "ejs");
+app.set('views', path.join(__dirname, 'views'));
 
 app.get('/', (req, res) => {
     const data = {name: 'Mario'};
@@ -42,6 +47,6 @@ app.get('/user', async (req, res) => {
     }
 });
 
-app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`);
+app.listen(port, '0.0.0.0', () => {
+    console.log(`Server listening on port ${port}`);
 });
